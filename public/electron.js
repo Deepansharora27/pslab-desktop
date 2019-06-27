@@ -6,14 +6,23 @@ const loadBalancer = require('electron-load-balancer');
 
 if (process.env.DEV) {
   const {
-    default: installExtension,
-    REDUX_DEVTOOLS,
-    REACT_DEVELOPER_TOOLS,
-  } = require('electron-devtools-installer');
+   default: installExtension,
+   REDUX_DEVTOOLS,
+   REACT_DEVELOPER_TOOLS,
+ } = require('electron-devtools-installer');
 
-  installExtension(REDUX_DEVTOOLS);
-  installExtension(REACT_DEVELOPER_TOOLS);
-}
+
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
+const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+ 
+
+ app.on('ready', () => {
+    [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach(extension => {
+      installExtension(extension)
+          .then((name) => console.log(`Added Extension: ${name}`))
+          .catch((err) => console.log('An error occurred: ', err));
+    });
+});
 
 const { app } = electron;
 const { BrowserWindow } = electron;
